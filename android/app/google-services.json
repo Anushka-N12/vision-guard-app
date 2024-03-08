@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1023705724730",
+    "project_id": "visionguard-c6bab",
+    "storage_bucket": "visionguard-c6bab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023705724730:android:78415e68fda3af0b248203",
+        "android_client_info": {
+          "package_name": "com.example.visionguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnpnDnpzjtP-R9JqN-JVP-Rd3qaqlbmvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
