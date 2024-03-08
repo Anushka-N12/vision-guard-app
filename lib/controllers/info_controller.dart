@@ -27,7 +27,12 @@ class InfoController extends GetxController {
 
   addResult(String result) {
     // employeeModel = EmployeeModel(name: name, address: address);
-    results.value.add(result);
+    // print("addResult is running");
+    // print(results);
+    const stars =
+        "\n******************************************************************";
+    results.value.add(result + stars);
+    // print(results);
     itemCount.value = results.value.length;
   }
 }
