@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:visionguard/controllers/info_controller.dart';
+import 'package:visionguard/references/info_controller.dart';
 import 'package:visionguard/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:visionguard/pages/sign_in.dart';
 import 'package:get/get.dart';
+// import 'package:visionguard/references/get_req.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class InfoPage extends StatefulWidget {
   final Map<String, String> infoDict;
@@ -17,6 +20,21 @@ class InfoPage extends StatefulWidget {
 class _InfoPageState extends State<InfoPage> {
   late InfoController controller;
   bool isLoading = true;
+  // final url = 'https://robotics2-production.up.railway.app/';
+
+  static Future<Map<String, dynamic>> fetchData() async {
+    var url = 'https://robotics2-production.up.railway.app';
+
+    var response = await http.get(Uri.parse(url)); // Make HTTP GET request
+    if (response.statusCode == 200) {
+      // Parse JSON array and extract object
+      var jsonArray = jsonDecode(response.body) as List;
+      var jsonObject = jsonArray.isNotEmpty ? jsonArray[0] : null;
+      return jsonObject; // Return the extracted object
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   void initState() {
@@ -99,7 +117,15 @@ class _InfoPageState extends State<InfoPage> {
                   isLoading = true;
                 });
                 // Perform async operation here
-                controller.addResult('result');
+                fetchData().then((responseBody) {
+                  List<dynamic> myList = responseBody.values.toList();
+                  controller.addResult(myList);
+                  print(responseBody);
+                  // Use the response body as needed
+                }).catchError((error) {
+                  print('Error: $error');
+                });
+
                 setState(() {
                   isLoading = false;
                 });

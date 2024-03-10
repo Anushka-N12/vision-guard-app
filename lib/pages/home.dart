@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
                   ),
                   SizedBox(height: 20),
                   reusableTextField(
-                    'Enter Last Seen Time',
+                    'Enter Last Seen Time(format YEAR-DATE-TIME HOUR:MINUTE:SECOND)',
                     Icons.access_time,
                     false,
                     _timeTextController,

@@ -1,6 +1,7 @@
 // import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
 
 class InfoController extends GetxController {
   Rx<List<String>> results = Rx<List<String>>([]);
@@ -25,14 +26,10 @@ class InfoController extends GetxController {
     addressTextEditingController.dispose();
   }
 
-  addResult(String result) {
-    // employeeModel = EmployeeModel(name: name, address: address);
-    // print("addResult is running");
-    // print(results);
-    const stars =
-        "\n******************************************************************";
-    results.value.add(result + stars);
-    // print(results);
+  addResult(List<dynamic> resultList) {
+    // Convert the list to a JSON string
+    String result = jsonEncode(resultList);
+    results.value.add(result);
     itemCount.value = results.value.length;
   }
 }
