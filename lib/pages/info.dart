@@ -40,7 +40,7 @@ class _InfoPageState extends State<InfoPage> {
       // var jsonArray = jsonDecode(response.body) as List;
       // var jsonObject = jsonArray.isNotEmpty ? jsonArray[0] : null;
       var jsonObject = jsonDecode(response.body) as Map<String, dynamic>;
-      print(jsonObject);
+      // print(jsonObject);
       return jsonObject; // Return the extracted object
     } else {
       throw Exception('Failed to load data');
@@ -82,8 +82,7 @@ class _InfoPageState extends State<InfoPage> {
           color: Color(int.parse('FF1E2838', radix: 16)),
         ),
         padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
             Text(
               "Looking for plate: ${widget.infoDict['plt']}",
@@ -109,18 +108,21 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
             SizedBox(height: 20),
-            isLoading
-                ? CircularProgressIndicator(
-                    color: Colors.white,
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(
-                        left: 8.0), // Adjust left padding as needed
-                    child: Icon(
-                      Icons.check_circle,
-                      color: Colors.white, // Color of the checkmark icon
+            Center(
+              child: isLoading
+                  ? CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(
+                        left: 8.0, // Adjust left padding as needed
+                      ),
+                      child: Icon(
+                        Icons.check_circle,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -131,7 +133,7 @@ class _InfoPageState extends State<InfoPage> {
                 fetchData().then((responseBody) {
                   // List<dynamic> myList = responseBody.values.toList();
                   controller.addResult(responseBody);
-                  print(responseBody);
+                  // print(responseBody);
                   // Use the response body as needed
                 }).catchError((error) {
                   print('Error: $error');
@@ -153,8 +155,7 @@ class _InfoPageState extends State<InfoPage> {
             Text(
               'Result: ' + controller.itemCount.value.toString(),
               style: TextStyle(
-                color: Color(int.parse('FF344663',
-                    radix: 16)), // Set text color to white
+                color: Color(int.parse('FF344663', radix: 16)),
               ),
             ),
             Container(
@@ -162,21 +163,21 @@ class _InfoPageState extends State<InfoPage> {
                   ? controller.image
                   : SizedBox.shrink(),
             ),
-            Expanded(
-              child: Obx(
-                () => ListView.builder(
-                  itemCount: controller.itemCount.value,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                        controller.results.value[index],
-                        style: TextStyle(
-                          color: Colors.white, // Set text color to white
-                        ),
+            Obx(
+              () => ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.itemCount.value,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      controller.results.value[index],
+                      style: TextStyle(
+                        color: Colors.white,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
