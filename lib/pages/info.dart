@@ -21,15 +21,26 @@ class _InfoPageState extends State<InfoPage> {
   late InfoController controller;
   bool isLoading = true;
   // final url = 'https://robotics2-production.up.railway.app/';
+  // static late Image? imageInfo;
 
-  static Future<Map<String, dynamic>> fetchData() async {
-    var url = 'https://robotics2-production.up.railway.app';
+  // void updateImage(Image? image) {
+  //   setState(() {
+  //     imageInfo = image;
+  //   });
+  // }
 
+  Future<Map<String, dynamic>> fetchData() async {
+    // var url = 'https://robotics2-production.up.railway.app';
+    var url = 'http://127.0.0.1:5000/?';
+    var params =
+        '/plt=${widget.infoDict['plt']}&loc=${widget.infoDict['loc']}&time=${widget.infoDict['time']}&inc=${controller.itemCount.value}';
     var response = await http.get(Uri.parse(url)); // Make HTTP GET request
     if (response.statusCode == 200) {
       // Parse JSON array and extract object
-      var jsonArray = jsonDecode(response.body) as List;
-      var jsonObject = jsonArray.isNotEmpty ? jsonArray[0] : null;
+      // var jsonArray = jsonDecode(response.body) as List;
+      // var jsonObject = jsonArray.isNotEmpty ? jsonArray[0] : null;
+      var jsonObject = jsonDecode(response.body) as Map<String, dynamic>;
+      print(jsonObject);
       return jsonObject; // Return the extracted object
     } else {
       throw Exception('Failed to load data');
@@ -118,8 +129,8 @@ class _InfoPageState extends State<InfoPage> {
                 });
                 // Perform async operation here
                 fetchData().then((responseBody) {
-                  List<dynamic> myList = responseBody.values.toList();
-                  controller.addResult(myList);
+                  // List<dynamic> myList = responseBody.values.toList();
+                  controller.addResult(responseBody);
                   print(responseBody);
                   // Use the response body as needed
                 }).catchError((error) {
@@ -139,6 +150,18 @@ class _InfoPageState extends State<InfoPage> {
                   )),
             ),
             SizedBox(height: 20),
+            Text(
+              'Result: ' + controller.itemCount.value.toString(),
+              style: TextStyle(
+                color: Color(int.parse('FF344663',
+                    radix: 16)), // Set text color to white
+              ),
+            ),
+            Container(
+              child: controller.image != null
+                  ? controller.image
+                  : SizedBox.shrink(),
+            ),
             Expanded(
               child: Obx(
                 () => ListView.builder(
