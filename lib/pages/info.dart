@@ -132,16 +132,17 @@ class _InfoPageState extends State<InfoPage> {
                 });
                 // Perform async operation here
                 fetchData().then((responseBody) {
-                  // List<dynamic> myList = responseBody.values.toList();
                   controller.addResult(responseBody);
-                  // print(responseBody);
-                  // Use the response body as needed
+                  // Set isLoading to false after data fetching is complete
+                  setState(() {
+                    isLoading = false;
+                  });
                 }).catchError((error) {
                   print('Error: $error');
-                });
-
-                setState(() {
-                  isLoading = false;
+                  // Set isLoading to false in case of error
+                  setState(() {
+                    isLoading = false;
+                  });
                 });
               },
               style: ElevatedButton.styleFrom(
