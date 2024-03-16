@@ -36,7 +36,8 @@ class InfoController extends GetxController {
       print(s.substring(0, 3));
       if (['Top', 'Rig', 'Bot', 'Lef', 'Tar', 'No ', 'Ful']
           .contains(s.substring(0, 3))) {
-        results.value.add(s);
+        // results.value.add(s);
+        results.value.insert(0, s);
       } else {
         // image = Image.memory(base64Decode(element));
         print('*Attempting decoding');

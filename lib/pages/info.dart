@@ -34,13 +34,14 @@ class _InfoPageState extends State<InfoPage> {
     var url = 'http://127.0.0.1:5000/?';
     var params =
         '/plt=${widget.infoDict['plt']}&loc=${widget.infoDict['loc']}&time=${widget.infoDict['time']}&inc=${controller.itemCount.value}';
-    var response = await http.get(Uri.parse(url)); // Make HTTP GET request
+    var response =
+        await http.get(Uri.parse(url + params)); // Make HTTP GET request
     if (response.statusCode == 200) {
       // Parse JSON array and extract object
       // var jsonArray = jsonDecode(response.body) as List;
       // var jsonObject = jsonArray.isNotEmpty ? jsonArray[0] : null;
       var jsonObject = jsonDecode(response.body) as Map<String, dynamic>;
-      // print(jsonObject);
+      print(jsonObject);
       return jsonObject; // Return the extracted object
     } else {
       throw Exception('Failed to load data');
@@ -164,21 +165,23 @@ class _InfoPageState extends State<InfoPage> {
                   : SizedBox.shrink(),
             ),
             Obx(
-              () => ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: controller.itemCount.value,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      controller.results.value[index],
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+              () => controller.itemCount.value == 0
+                  ? SizedBox.shrink()
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: controller.itemCount.value,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(
+                            controller.results.value[index],
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
